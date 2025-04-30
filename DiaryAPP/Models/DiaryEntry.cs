@@ -5,11 +5,13 @@ namespace DiaryAPP.Models
     public class DiaryEntry
     {
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage ="* Please enter a title! ")]
         public string Title { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage ="* Please enter a content! ")]
+        [StringLength(100, ErrorMessage = "The content should be maximum 100 characters")]
         public string Content { get; set; } = string.Empty;
-        [Required]
+        [Required(ErrorMessage ="* Please select a date! ")]
+    
         public DateTime Created { get; set; }
 
     }
