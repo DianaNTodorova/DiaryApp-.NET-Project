@@ -17,7 +17,7 @@ namespace DiaryAPP.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Message = "Welcome to your first ASP.NET MVC app!";
+            //ViewBag.Message = "Welcome to your first ASP.NET MVC app!";
             return View();
         }
 
