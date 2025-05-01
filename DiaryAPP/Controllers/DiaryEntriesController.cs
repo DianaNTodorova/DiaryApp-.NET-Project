@@ -1,6 +1,7 @@
 ﻿using DiaryAPP.Data;
 using DiaryAPP.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DiaryAPP.Controllers
 {
@@ -24,9 +25,77 @@ namespace DiaryAPP.Controllers
         [HttpPost]
         public IActionResult Create(DiaryEntry obj)
         {
-            _db.DiaryEntries.Add(obj);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if (obj != null && obj.Title.Length < 3) //server side validation
+            {
+                ModelState.TryAddModelError("Title","The title is too short");
+            
+            }
+            if (ModelState.IsValid)
+            {
+                _db.DiaryEntries.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+      
+            DiaryEntry? diaryEntry = _db.DiaryEntries.Find(id);
+
+            if (diaryEntry == null)
+            {
+                return NotFound();
+            }
+            return View(diaryEntry);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(DiaryEntry obj)
+        {
+            if (obj != null && obj.Title.Length < 3) //server side validation
+            {
+                ModelState.TryAddModelError("Title", "The title is too short");
+
+            }
+            if (ModelState.IsValid)
+            {
+                _db.DiaryEntries.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            DiaryEntry? diaryEntry = _db.DiaryEntries.Find(id);
+
+            if (diaryEntry == null)
+            {
+                return NotFound();
+            }
+            return View(diaryEntry);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(DiaryEntry obj)
+        {
+                _db.DiaryEntries.Remove(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+          
+          
         }
     }
 }
